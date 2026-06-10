@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CRACK_NVIDIA.exe — Interview Prep Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080C14;--surf:#0B1522;--surf2:#0D1828;--border:#1A2F4A;--text:#C8D8E8;--muted:#4A6A8A;--accent:#00D4AA}
+html,body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono','Courier New',monospace;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:#0D1420}::-webkit-scrollbar-thumb{background:#1E3A5F;border-radius:2px}
+/* HEADER */
+#header{background:linear-gradient(135deg,#0D1420,#111C2E);border-bottom:1px solid var(--border);padding:20px 16px 14px;position:sticky;top:0;z-index:100}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12;flex-wrap:wrap;gap:10px}
+.header-title{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:#E8F4FF;letter-spacing:-0.5px}
+.header-sub{font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:0.08em}
+.header-pct{font-family:'Space Mono',monospace;font-size:26px;font-weight:700;color:var(--accent);text-align:right}
+.progress-bar{background:#0D1420;border-radius:2px;height:4px;border:1px solid var(--border);overflow:hidden;margin-top:12px}
+.progress-fill{height:100%;border-radius:2px;transition:width 0.8s ease}
+/* LC STRIP */
+.lc-strip{margin-top:10px;background:#0A1628;border:1px solid var(--border);border-radius:4px;padding:8px 12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.lc-label{font-size:9px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;flex-shrink:0}
+.lc-stat{font-size:13px;font-weight:700;color:#E8F4FF;font-family:'Space Mono',monospace}
+.lc-sub{font-size:9px;color:var(--muted)}
+.lc-bar-wrap{flex:1;min-width:80px}
+.lc-pace{font-size:9px;margin-top:3px}
+/* TABS */
+#tabs{display:flex;border-bottom:1px solid var(--border);background:#0A0F1A;padding:0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{background:none;border:none;cursor:pointer;padding:11px 13px;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-family:inherit;white-space:nowrap;margin-bottom:-1px;border-bottom:2px solid transparent;color:var(--muted);transition:color 0.15s}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+/* CONTENT */
+#content{padding:16px;max-width:900px;margin:0 auto}
+.section-label{font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px}
+/* CARDS */
+.card{background:var(--surf);border:1px solid var(--border);border-radius:4px;margin-bottom:8px;overflow:hidden}
+.card-header{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none}
+.card-expanded{border-top:1px solid var(--border);padding:14px}
+/* PHASE BADGE */
+.pid{width:30px;height:30px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:'Space Mono',monospace;flex-shrink:0}
+/* BADGES */
+.badge{font-size:8px;padding:2px 6px;border-radius:2px;letter-spacing:0.1em;text-transform:uppercase}
+/* TOPIC CHECK */
+.topic-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;cursor:pointer}
+.topic-row input[type=checkbox]{width:12px;height:12px;flex-shrink:0;margin-top:2px;accent-color:var(--accent);cursor:pointer}
+.topic-text{font-size:11px;color:#9AB4C8;line-height:1.5;transition:color 0.2s}
+.topic-text.done{color:#2A4A5A;text-decoration:line-through}
+/* TRACK HEADER */
+.track-hdr{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.track-block{padding-left:8px;border-left:2px solid rgba(255,255,255,0.08);margin-bottom:14px}
+/* WEEK LABEL */
+.week-lbl{font-size:9px;color:var(--muted);letter-spacing:0.08em;margin-bottom:5px;text-transform:uppercase}
+/* MILESTONE */
+.milestone{padding:9px 12px;border-radius:3px;font-size:11px;color:#C8D8E8;margin-top:12px}
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.stat-card{background:var(--surf);border:1px solid var(--border);border-radius:4px;padding:12px}
+.stat-val{font-size:22px;font-weight:700;font-family:'Space Mono',monospace}
+.stat-lbl{font-size:9px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.08em}
+/* DAY VIEW */
+.month-label{font-size:11px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin:16px 0 8px;font-weight:600}
+.day-card{background:var(--surf);border:1px solid var(--border);border-radius:4px;margin-bottom:6px;overflow:hidden}
+.day-header{padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.day-date{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#E8F4FF;flex-shrink:0;width:72px}
+.day-name{font-size:9px;color:var(--muted);width:28px;flex-shrink:0}
+.day-phase-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.day-preview{font-size:10px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.day-check-count{font-size:9px;color:var(--muted);flex-shrink:0;white-space:nowrap}
+.day-expanded{border-top:1px solid var(--border);padding:12px 14px}
+.day-topic-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;cursor:pointer}
+.day-topic-row input[type=checkbox]{width:12px;height:12px;flex-shrink:0;margin-top:2px;accent-color:var(--accent);cursor:pointer}
+.track-pill{font-size:8px;padding:1px 5px;border-radius:2px;flex-shrink:0;letter-spacing:0.08em;margin-top:2px;white-space:nowrap}
+.day-topic-text{font-size:11px;color:#9AB4C8;line-height:1.5;transition:color 0.2s}
+.day-topic-text.done{color:#2A4A5A;text-decoration:line-through}
+.rest-badge{font-size:10px;color:var(--muted);font-style:italic;padding:4px 0}
+/* WEEK SCHEDULE */
+.week-card{background:var(--surf);border:1px solid var(--border);border-radius:4px;padding:12px;margin-bottom:8px}
+.week-day-name{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;width:36px;flex-shrink:0}
+/* TODAY INDICATOR */
+.today-dot{display:inline-block;width:6px;height:6px;background:#EF4444;border-radius:50%;margin-left:6px;vertical-align:middle;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+/* FILTER BAR */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filter-btn{background:none;border:1px solid var(--border);border-radius:2px;padding:4px 9px;font-size:9px;color:var(--muted);cursor:pointer;font-family:inherit;letter-spacing:0.08em;transition:all 0.15s;text-transform:uppercase}
+.filter-btn.active{color:var(--accent);border-color:var(--accent)}
+/* JUMP TODAY */
+.jump-btn{background:none;border:1px solid var(--accent);border-radius:2px;padding:4px 10px;font-size:9px;color:var(--accent);cursor:pointer;font-family:inherit;letter-spacing:0.08em;margin-left:auto}
+/* FOOTER */
+#footer{border-top:1px solid var(--border);padding:10px 16px;background:var(--bg);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;margin-top:20px}
+#footer span{font-size:8px;color:#1E3A5F;letter-spacing:0.08em}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="header-top">
+    <div>
+      <div style="font-size:9px;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:4px">▸ NVIDIA INTERVIEW PREP</div>
+      <div class="header-title">CRACK_NVIDIA.exe</div>
+      <div class="header-sub" id="header-sub">Jun 8 → Sep 7, 2026</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:2px">OVERALL</div>
+      <div class="header-pct" id="overall-pct">0%</div>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="overall-bar" style="background:linear-gradient(90deg,#00D4AA,#00FF88);width:0%"></div></div>
+  <div class="lc-strip">
+    <div class="lc-label">⬡ LC @wannabecodeboss</div>
+    <div id="lc-stats-area" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;flex:1">
+      <div style="font-size:10px;color:var(--muted);animation:blink 1.5s infinite" id="lc-loading">fetching…</div>
+    </div>
+  </div>
+</div>
+
+<div id="tabs">
+  <button class="tab-btn active" onclick="showTab('days')" id="tab-days">▸ Daily</button>
+  <button class="tab-btn" onclick="showTab('phases')" id="tab-phases">▸ Phases</button>
+  <button class="tab-btn" onclick="showTab('progress')" id="tab-progress">▸ Progress</button>
+  <button class="tab-btn" onclick="showTab('weekly')" id="tab-weekly">▸ Weekly</button>
+</div>
+
+<div id="content"></div>
+
+<div id="footer">
+  <span>NVIDIA PREP · @wannabecodeboss · Jun–Sep 2026</span>
+  <span id="last-save">Checks auto-saved to your browser</span>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const SCHEDULE = {"2026-06-08":{"date":"2026-06-08","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Arrays: Two Sum, Best Time to Buy Stock","color":"#FF9500"},{"track":"CompArch","topic":"ISA overview: RISC vs CISC, instruction format, addressing modes","color":"#76B9ED"},{"track":"VLSI","topic":"MOSFET: nMOS/pMOS structure, Vgs, Vds, threshold voltage Vt","color":"#A855F7"},{"track":"DigDesign","topic":"Logic gates: AND/OR/NOT/NAND/NOR/XOR/XNOR \u2014 truth tables + bubble notation","color":"#FF6B35"}]},"2026-06-09":{"date":"2026-06-09","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Arrays: Contains Duplicate, Product of Array Except Self","color":"#FF9500"},{"track":"CompArch","topic":"Single-cycle datapath: PC, register file, ALU, data memory","color":"#76B9ED"},{"track":"VLSI","topic":"MOSFET I-V: cut-off (Vgs<Vt), linear (Vds<Vgs-Vt), saturation","color":"#A855F7"},{"track":"DigDesign","topic":"Boolean algebra: DeMorgan's theorem, SOP/POS canonical forms","color":"#FF6B35"}]},"2026-06-10":{"date":"2026-06-10","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Arrays: Maximum Subarray (Kadane's), Maximum Product Subarray","color":"#FF9500"},{"track":"CompArch","topic":"Single-cycle control: opcode decode, ALU control, mux selects","color":"#76B9ED"},{"track":"VLSI","topic":"CMOS inverter: circuit schematic, VTC derivation (VOH=VDD, VOL=0)","color":"#A855F7"},{"track":"DigDesign","topic":"K-maps: 2/3/4-variable, prime implicants, don't cares","color":"#FF6B35"}]},"2026-06-11":{"date":"2026-06-11","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Hashing: Valid Anagram, Group Anagrams","color":"#FF9500"},{"track":"CompArch","topic":"Performance: CPI, clock cycle time, MIPS, Amdahl's law","color":"#76B9ED"},{"track":"VLSI","topic":"Noise margins: NMH = VOH\u2212VIH, NML = VIL\u2212VOL, draw VTC","color":"#A855F7"},{"track":"DigDesign","topic":"Combinational: 2:1 Mux (gate-level), 4:1 Mux from 2:1 Mux","color":"#FF6B35"}]},"2026-06-12":{"date":"2026-06-12","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Hashing: Top K Frequent Elements, Encode/Decode Strings","color":"#FF9500"},{"track":"CompArch","topic":"Pipeline concept: throughput vs latency, ideal 5\u00d7 speedup","color":"#76B9ED"},{"track":"VLSI","topic":"Inverter sizing: \u03b2-ratio = kp/kn, symmetric VTC (VM = VDD/2)","color":"#A855F7"},{"track":"DigDesign","topic":"Combinational: 2:4 Decoder, Priority Encoder (with enable)","color":"#FF6B35"}]},"2026-06-13":{"date":"2026-06-13","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Two Pointers: Valid Palindrome, 3Sum","color":"#FF9500"},{"track":"CompArch","topic":"5-stage pipeline: IF, ID, EX, MEM, WB \u2014 signals per stage","color":"#76B9ED"},{"track":"VLSI","topic":"Switch-level model: nMOS Req, pMOS Req, drain capacitance","color":"#A855F7"},{"track":"DigDesign","topic":"Half adder + Full adder \u2014 sum and carry derivation + gate-level","color":"#FF6B35"}]},"2026-06-14":{"date":"2026-06-14","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 review week 1 DSA patterns","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 draw full 5-stage datapath from scratch","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 size an inverter for equal tpHL and tpLH","color":"#A855F7"},{"track":"DigDesign","topic":"REST \u2014 HDLBits: all combinational basics","color":"#FF6B35"}]},"2026-06-15":{"date":"2026-06-15","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Two Pointers: Container With Most Water, Trapping Rain Water","color":"#FF9500"},{"track":"CompArch","topic":"Pipeline data hazards: RAW, WAR, WAW \u2014 examples","color":"#76B9ED"},{"track":"VLSI","topic":"CMOS NAND2: series nMOS pull-down, parallel pMOS pull-up","color":"#A855F7"},{"track":"DigDesign","topic":"Combinational: Comparator (A>B, A=B, A<B), Parity generator","color":"#FF6B35"}]},"2026-06-16":{"date":"2026-06-16","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Sliding Window: Longest Substring No Repeat, Permutation in String","color":"#FF9500"},{"track":"CompArch","topic":"Hazard forwarding: EX\u2192EX and MEM\u2192EX bypass paths","color":"#76B9ED"},{"track":"VLSI","topic":"CMOS NOR2: parallel nMOS pull-down, series pMOS pull-up","color":"#A855F7"},{"track":"DigDesign","topic":"Tri-state buffers, open-drain, bus arbitration concept","color":"#FF6B35"}]},"2026-06-17":{"date":"2026-06-17","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Sliding Window: Longest Repeating Char Replacement, Min Window Substring","color":"#FF9500"},{"track":"CompArch","topic":"Load-use hazard: stall insertion, bubble in pipeline","color":"#76B9ED"},{"track":"VLSI","topic":"CMOS NAND3/NOR3: stack effect \u2014 size series transistors \u00d7N","color":"#A855F7"},{"track":"DigDesign","topic":"Flip-flops: D-FF (master-slave latch), JK-FF, T-FF \u2014 characteristic eqs","color":"#FF6B35"}]},"2026-06-18":{"date":"2026-06-18","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Stack: Valid Parentheses, Min Stack","color":"#FF9500"},{"track":"CompArch","topic":"Control hazards: branch detected in ID vs EX stage","color":"#76B9ED"},{"track":"VLSI","topic":"Complex gate AOI22: (A\u00b7B + C\u00b7D)' \u2014 derive PDN and PUN","color":"#A855F7"},{"track":"DigDesign","topic":"Flip-flop timing: setup, hold, clock-to-Q \u2014 timing diagram","color":"#FF6B35"}]},"2026-06-19":{"date":"2026-06-19","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Stack: Evaluate Reverse Polish Notation, Daily Temperatures","color":"#FF9500"},{"track":"CompArch","topic":"Branch prediction: always-taken, 1-bit predictor","color":"#76B9ED"},{"track":"VLSI","topic":"Complex gate OAI21: ((A+B)\u00b7C)' \u2014 derive and size","color":"#A855F7"},{"track":"DigDesign","topic":"Registers: parallel load, SISO/SIPO/PISO/PIPO shift registers","color":"#FF6B35"}]},"2026-06-20":{"date":"2026-06-20","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Stack: Car Fleet, Largest Rectangle in Histogram","color":"#FF9500"},{"track":"CompArch","topic":"Branch prediction: 2-bit saturating counter, BTB, BHT","color":"#76B9ED"},{"track":"VLSI","topic":"Complementary CMOS: any function \u2014 write PDN, invert for PUN","color":"#A855F7"},{"track":"DigDesign","topic":"Counters: synchronous up/down binary counter, modulo-N, Gray code","color":"#FF6B35"}]},"2026-06-21":{"date":"2026-06-21","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 mock easy problems \u00d73","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 pipeline hazard problem set (draw waveforms)","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 complex gate sizing drill (AOI33, OAI22)","color":"#A855F7"},{"track":"DigDesign","topic":"REST \u2014 HDLBits: all sequential circuit problems","color":"#FF6B35"}]},"2026-06-22":{"date":"2026-06-22","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Binary Search: Binary Search, Search 2D Matrix","color":"#FF9500"},{"track":"CompArch","topic":"Cache motivation: memory wall, latency numbers","color":"#76B9ED"},{"track":"VLSI","topic":"Propagation delay: tpHL (high-to-low), tpLH (low-to-high), tp = avg","color":"#A855F7"},{"track":"DigDesign","topic":"FSM: Moore machine \u2014 outputs = f(state only), state diagram","color":"#FF6B35"}]},"2026-06-23":{"date":"2026-06-23","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Binary Search: Koko Eating Bananas, Find Min in Rotated Array","color":"#FF9500"},{"track":"CompArch","topic":"Direct-mapped cache: index, tag, offset, valid bit \u2014 worked example","color":"#76B9ED"},{"track":"VLSI","topic":"Elmore delay: resistor tree, sum Ri \u00d7 Ci_downstream","color":"#A855F7"},{"track":"DigDesign","topic":"FSM: Mealy machine \u2014 outputs = f(state, inputs), compare to Moore","color":"#FF6B35"}]},"2026-06-24":{"date":"2026-06-24","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Binary Search: Search in Rotated Sorted Array, Median of Two Sorted Arrays","color":"#FF9500"},{"track":"CompArch","topic":"Set-associative cache: 2-way, 4-way \u2014 LRU replacement","color":"#76B9ED"},{"track":"VLSI","topic":"Elmore delay: apply to NAND3 worst-case pull-down path","color":"#A855F7"},{"track":"DigDesign","topic":"FSM: state encoding (binary, one-hot, Gray) \u2014 tradeoffs","color":"#FF6B35"}]},"2026-06-25":{"date":"2026-06-25","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Linked List: Reverse LL, Merge Two Sorted Lists","color":"#FF9500"},{"track":"CompArch","topic":"Fully-associative cache, FIFO vs random vs LRU","color":"#76B9ED"},{"track":"VLSI","topic":"Drive strength: fan-out degradation, buffer insertion strategy","color":"#A855F7"},{"track":"DigDesign","topic":"FSM: complete state table \u2014 next-state logic, output logic","color":"#FF6B35"}]},"2026-06-26":{"date":"2026-06-26","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Linked List: Reorder List, Remove Nth From End, Copy List with Random Pointer","color":"#FF9500"},{"track":"CompArch","topic":"Write policies: write-back + write-allocate vs write-through","color":"#76B9ED"},{"track":"VLSI","topic":"Logical effort: g=Cin_gate/Cin_ref, f=actual/optimal fanout","color":"#A855F7"},{"track":"DigDesign","topic":"FSM example: sequence detector (detect '1011'), vending machine","color":"#FF6B35"}]},"2026-06-27":{"date":"2026-06-27","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Linked List: Add Two Numbers, Linked List Cycle, Find Duplicate, LRU Cache","color":"#FF9500"},{"track":"CompArch","topic":"3Cs miss classification: compulsory, capacity, conflict","color":"#76B9ED"},{"track":"VLSI","topic":"Logical effort: F=g1\u00d7f1\u00d7...\u00d7gn\u00d7fn, minimum delay with h=F^(1/n)","color":"#A855F7"},{"track":"DigDesign","topic":"FSM in SystemVerilog: always_ff (state reg), always_comb (NS/output), case","color":"#FF6B35"}]},"2026-06-28":{"date":"2026-06-28","phase":"P1","phaseColor":"#00D4AA","phaseDesc":"Phase 1 \u00b7 DSA Blitz + CompArch + VLSI + Digital Design","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 review all patterns so far","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 cache hit rate + AMAT calculation problems","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 logical effort: optimize 4-input AND (NAND4 vs NAND2+INV)","color":"#A855F7"},{"track":"DigDesign","topic":"REST \u2014 HDLBits: implement all FSM problems in SV","color":"#FF6B35"}]},"2026-06-29":{"date":"2026-06-29","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Trees: Invert Binary Tree, Max Depth, Diameter, Balanced, Same Tree","color":"#FF9500"},{"track":"CompArch","topic":"AMAT = HT + MR \u00d7 MP, multi-level cache formula","color":"#76B9ED"},{"track":"VLSI","topic":"Dynamic power: P = \u03b1CV\u00b2f \u2014 derive \u03b1 (activity), C (load), V, f","color":"#A855F7"},{"track":"DigDesign","topic":"Timing in sequential: critical path, setup slack = Tclk \u2212 Tcq \u2212 Tlogic \u2212 Tsetup","color":"#FF6B35"}]},"2026-06-30":{"date":"2026-06-30","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Trees: Subtree, LCA of BST, Binary Tree Level Order","color":"#FF9500"},{"track":"CompArch","topic":"L1/L2/L3 hierarchy: inclusive vs exclusive, victim cache","color":"#76B9ED"},{"track":"VLSI","topic":"Static power: subthreshold Id \u221d exp(Vgs\u2212Vt)/nVT, gate/junction leakage","color":"#A855F7"},{"track":"DigDesign","topic":"Clock skew impact: positive skew helps setup, hurts hold","color":"#FF6B35"}]},"2026-07-01":{"date":"2026-07-01","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Trees: Right Side View, Count Good Nodes, Validate BST","color":"#FF9500"},{"track":"CompArch","topic":"Virtual memory: page table walk, page fault handling","color":"#76B9ED"},{"track":"VLSI","topic":"Clock gating: enable flop, ICG cell, power savings calculation","color":"#A855F7"},{"track":"DigDesign","topic":"Metastability in digital design \u2014 2-FF synchronizer necessity","color":"#FF6B35"}]},"2026-07-02":{"date":"2026-07-02","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Trees: Kth Smallest in BST, Construct from Pre+Inorder","color":"#FF9500"},{"track":"CompArch","topic":"TLB: structure, hit/miss, ASID, TLB shootdown","color":"#76B9ED"},{"track":"VLSI","topic":"Power gating: sleep transistor (MTCMOS), virtual VDD rail","color":"#A855F7"},{"track":"DigDesign","topic":"CDC: 2-FF synchronizer, why 1-FF insufficient (metastability window)","color":"#FF6B35"}]},"2026-07-03":{"date":"2026-07-03","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Trees: Binary Tree Max Path Sum, Serialize/Deserialize","color":"#FF9500"},{"track":"CompArch","topic":"Virtual memory: page size tradeoffs (4K vs 2M), huge pages","color":"#76B9ED"},{"track":"VLSI","topic":"DVFS: voltage/frequency islands, setup margin, droop guardbanding","color":"#A855F7"},{"track":"DigDesign","topic":"Async FIFO: Gray code write/read pointers, full/empty detection logic","color":"#FF6B35"}]},"2026-07-04":{"date":"2026-07-04","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Trie: Implement Trie, Design Add & Search Words, Word Search II","color":"#FF9500"},{"track":"CompArch","topic":"I/O: MMIO, DMA, interrupts vs polling, programmed I/O","color":"#76B9ED"},{"track":"VLSI","topic":"Multi-Vt: HVT (low leak) vs SVT vs LVT (fast) \u2014 where to use each","color":"#A855F7"},{"track":"DigDesign","topic":"SV syntax: modules, ports, wire/logic/reg, always_ff/always_comb/initial","color":"#FF6B35"}]},"2026-07-05":{"date":"2026-07-05","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 mock tree problems","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 virtual memory + TLB problem set","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 power problem set (calculate power savings from clock gating)","color":"#A855F7"},{"track":"DigDesign","topic":"REST \u2014 Write 4-bit ALU in SV (ADD, SUB, AND, OR, SLT, compare)","color":"#FF6B35"}]},"2026-07-06":{"date":"2026-07-06","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Heap: Kth Largest, Last Stone Weight, K Closest Points","color":"#FF9500"},{"track":"CompArch","topic":"ILP motivation: in-order bottleneck, CPI wall","color":"#76B9ED"},{"track":"VLSI","topic":"Half adder: sum=A\u2295B, carry=A\u00b7B","color":"#A855F7"},{"track":"DigDesign","topic":"SV interfaces, clocking blocks, assertions (assert property)","color":"#FF6B35"}]},"2026-07-07":{"date":"2026-07-07","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Heap: Task Scheduler, Design Twitter, Find Median from Data Stream","color":"#FF9500"},{"track":"CompArch","topic":"Scoreboard algorithm: issue, read operands, execute, write-back","color":"#76B9ED"},{"track":"VLSI","topic":"Full adder: sum=A\u2295B\u2295Cin, cout = majority \u2014 gate implementation","color":"#A855F7"},{"track":"DigDesign","topic":"CLA in SystemVerilog: implement + write testbench","color":"#FF6B35"}]},"2026-07-08":{"date":"2026-07-08","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Backtracking: Subsets, Combination Sum","color":"#FF9500"},{"track":"CompArch","topic":"Tomasulo: reservation stations, CDB, register renaming","color":"#76B9ED"},{"track":"VLSI","topic":"Ripple carry adder (RCA): delay = n\u00d7tFA_carry, where to use","color":"#A855F7"},{"track":"DigDesign","topic":"DD Interview Q: 'Implement 3-bit Gray counter in SV'","color":"#FF6B35"}]},"2026-07-09":{"date":"2026-07-09","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Backtracking: Permutations, Subsets II, Combination Sum II","color":"#FF9500"},{"track":"CompArch","topic":"Tomasulo: ROB \u2014 speculative execution, precise exceptions, commit","color":"#76B9ED"},{"track":"VLSI","topic":"Carry-lookahead adder (CLA): G=A\u00b7B, P=A\u2295B, lookahead equations","color":"#A855F7"},{"track":"DigDesign","topic":"DD Interview Q: 'Detect rising edge of async signal \u2014 design sync circuit'","color":"#FF6B35"}]},"2026-07-10":{"date":"2026-07-10","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Backtracking: Word Search, Palindrome Partitioning, Letter Combinations","color":"#FF9500"},{"track":"CompArch","topic":"Register renaming: eliminate WAR/WAW, physical vs architectural regs","color":"#76B9ED"},{"track":"VLSI","topic":"Carry-select adder: precompute sum0/sum1, select with carry in","color":"#A855F7"},{"track":"DigDesign","topic":"DD Interview Q: 'Design FIFO depth=8, width=8 in SV'","color":"#FF6B35"}]},"2026-07-11":{"date":"2026-07-11","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Backtracking: N-Queens","color":"#FF9500"},{"track":"CompArch","topic":"Superscalar: multiple-issue, fetch width, decode width","color":"#76B9ED"},{"track":"VLSI","topic":"Carry-save adder (CSA): 3-input to 2-output, Wallace tree reduction","color":"#A855F7"},{"track":"DigDesign","topic":"HDLBits: complete all remaining problems \u2014 final sprint","color":"#FF6B35"}]},"2026-07-12":{"date":"2026-07-12","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 backtracking review","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 Tomasulo whiteboard drill (draw RS + ROB)","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 adder timing: compare RCA vs CLA for 16-bit add","color":"#A855F7"},{"track":"DigDesign","topic":"REST \u2014 Digital Design full review","color":"#FF6B35"}]},"2026-07-13":{"date":"2026-07-13","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Graphs: Number of Islands, Max Area of Island, Clone Graph","color":"#FF9500"},{"track":"CompArch","topic":"Branch prediction advanced: tournament predictor, gshare","color":"#76B9ED"},{"track":"VLSI","topic":"D flip-flop: master-latch + slave-latch, positive edge trigger","color":"#A855F7"},{"track":"DigDesign","topic":"Digital Design mock interview simulation (45 min)","color":"#FF6B35"}]},"2026-07-14":{"date":"2026-07-14","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Graphs: Walls and Gates, Rotting Oranges, Pacific Atlantic","color":"#FF9500"},{"track":"CompArch","topic":"TAGE predictor: tagged geometric history length predictor","color":"#76B9ED"},{"track":"VLSI","topic":"Setup time: data must be stable Tsetup before clk edge","color":"#A855F7"},{"track":"DigDesign","topic":"Review: FSM + CDC + timing \u2014 create A4 cheat sheet","color":"#FF6B35"}]},"2026-07-15":{"date":"2026-07-15","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Graphs: Surrounded Regions, Course Schedule I & II","color":"#FF9500"},{"track":"CompArch","topic":"HW prefetching: stride prefetcher, stream buffer, RPT","color":"#76B9ED"},{"track":"VLSI","topic":"Hold time: data must stable Thold after clk edge \u2014 hold fix = buffer","color":"#A855F7"},{"track":"DigDesign","topic":"Review: SV syntax \u2014 all constructs on one page","color":"#FF6B35"}]},"2026-07-16":{"date":"2026-07-16","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Graphs: Graph Valid Tree, Number of Connected Components","color":"#FF9500"},{"track":"CompArch","topic":"SW prefetch: prefetch intrinsics, distance, throttling","color":"#76B9ED"},{"track":"VLSI","topic":"Timing path: launch FF \u2192 comb logic \u2192 capture FF \u2014 draw diagram","color":"#A855F7"}]},"2026-07-17":{"date":"2026-07-17","phase":"P2","phaseColor":"#FF6B35","phaseDesc":"Phase 2 \u00b7 DSA Finish + Digital Design Deep + VLSI Power/Timing","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Graphs: Redundant Connection, Word Ladder","color":"#FF9500"},{"track":"CompArch","topic":"Cache coherence motivation: stale data in private caches","color":"#76B9ED"},{"track":"VLSI","topic":"Setup check: Tclk \u2265 Tcq + Tlogic + Tsetup + Tskew","color":"#A855F7"}]},"2026-07-18":{"date":"2026-07-18","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Advanced Graphs: Reconstruct Itinerary, Min Cost to Connect Points","color":"#FF9500"},{"track":"CompArch","topic":"MESI protocol: state machine \u2014 Modified, Exclusive, Shared, Invalid","color":"#76B9ED"},{"track":"VLSI","topic":"Hold check: Tcq_min + Tlogic_min \u2265 Thold + Tskew (tightest path)","color":"#A855F7"}]},"2026-07-19":{"date":"2026-07-19","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 graph review","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 draw MESI state diagram, all transitions","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 timing analysis: find critical path, calculate setup/hold slack","color":"#A855F7"}]},"2026-07-20":{"date":"2026-07-20","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Advanced Graphs: Network Delay (Dijkstra), Swim in Rising Water (Dijkstra)","color":"#FF9500"},{"track":"CompArch","topic":"MESI bus transactions: BusRd, BusRdX, BusUpgr","color":"#76B9ED"},{"track":"VLSI","topic":"Metastability: violated setup/hold \u2192 undefined output, MTBF = exp(\u03c4\u00b7f)/f_data","color":"#A855F7"}]},"2026-07-21":{"date":"2026-07-21","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Advanced Graphs: Alien Dictionary, Cheapest Flights Within K Stops","color":"#FF9500"},{"track":"CompArch","topic":"False sharing: example, cache line padding fix","color":"#76B9ED"},{"track":"VLSI","topic":"CDC: 2-FF synchronizer reduces MTBF \u2014 why 1-FF insufficient","color":"#A855F7"}]},"2026-07-22":{"date":"2026-07-22","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"DP 1D: Climbing Stairs, Min Cost Climbing Stairs, House Robber","color":"#FF9500"},{"track":"CompArch","topic":"MESIF (Intel), MOESI (AMD): F=Forward, O=Owned semantics","color":"#76B9ED"},{"track":"VLSI","topic":"Async FIFO: write ptr in wclk domain, read ptr in rclk domain","color":"#A855F7"}]},"2026-07-23":{"date":"2026-07-23","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"DP 1D: House Robber II, Longest Palindromic Substring","color":"#FF9500"},{"track":"CompArch","topic":"Directory-based coherence: directory entry format, scalability","color":"#76B9ED"},{"track":"VLSI","topic":"Gray code pointers: only 1 bit changes \u2014 safe for CDC","color":"#A855F7"}]},"2026-07-24":{"date":"2026-07-24","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"DP 1D: Decode Ways, Coin Change, Word Break","color":"#FF9500"},{"track":"CompArch","topic":"Memory consistency: SC definition \u2014 all accesses globally ordered","color":"#76B9ED"},{"track":"VLSI","topic":"FIFO full/empty: compare MSB (same=empty, diff=full) Gray ptrs","color":"#A855F7"}]},"2026-07-25":{"date":"2026-07-25","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"DP 1D: LIS, Partition Equal Subset Sum \u2014 LC150 1D DONE \u2713","color":"#FF9500"},{"track":"CompArch","topic":"TSO (x86): store buffer, MFENCE, load bypasses store","color":"#76B9ED"},{"track":"VLSI","topic":"Handshake synchronizer: 4-phase req/ack, for low-bandwidth CDC","color":"#A855F7"}]},"2026-07-26":{"date":"2026-07-26","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 DP 1D pattern review","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 coherence + consistency problem set","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 CDC problem set: design 8-entry async FIFO in SV","color":"#A855F7"}]},"2026-07-27":{"date":"2026-07-27","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"DP 2D: Unique Paths, Longest Common Subsequence","color":"#FF9500"},{"track":"CompArch","topic":"NUMA: topology, local vs remote memory latency, lscpu output","color":"#76B9ED"},{"track":"VLSI","topic":"6T SRAM cell: 2 cross-coupled inverters + 2 access transistors","color":"#A855F7"}]},"2026-07-28":{"date":"2026-07-28","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"DP 2D: Buy & Sell with Cooldown, Coin Change II, Target Sum","color":"#FF9500"},{"track":"CompArch","topic":"NUMA page migration, NUMA-aware allocation (numactl)","color":"#76B9ED"},{"track":"VLSI","topic":"SRAM read: precharge BL/BLB, WL high, sense amp detects \u0394V","color":"#A855F7"}]},"2026-07-29":{"date":"2026-07-29","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"DP 2D: Interleaving String, Longest Increasing Path in Matrix","color":"#FF9500"},{"track":"CompArch","topic":"Power mgmt: DVFS, P-states, C-states, dark silicon","color":"#76B9ED"},{"track":"VLSI","topic":"SRAM write: write driver forces BL, WL high, cell flips","color":"#A855F7"}]},"2026-07-30":{"date":"2026-07-30","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"DP 2D: Distinct Subsequences, Edit Distance, Burst Balloons, Regex Match","color":"#FF9500"},{"track":"CompArch","topic":"Power mgmt: clock gating, power gating, retention flops in CPU","color":"#76B9ED"},{"track":"VLSI","topic":"SRAM SNM: static noise margin, butterfly curve, read disturb","color":"#A855F7"}]},"2026-07-31":{"date":"2026-07-31","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Intervals: Insert Interval, Merge Intervals, Non-Overlapping Intervals","color":"#FF9500"},{"track":"CompArch","topic":"GPU motivation: why throughput processor \u2014 latency vs throughput","color":"#76B9ED"},{"track":"VLSI","topic":"Memory array: row decoder (binary\u2192one-hot), column mux, SA","color":"#A855F7"}]},"2026-08-01":{"date":"2026-08-01","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Intervals: Meeting Rooms I & II, Min Interval to Include Each Query","color":"#FF9500"},{"track":"CompArch","topic":"SIMT model: 32-thread warp, divergence, reconvergence point","color":"#76B9ED"},{"track":"VLSI","topic":"Sense amplifier: latch-type, differential input, regeneration time","color":"#A855F7"}]},"2026-08-02":{"date":"2026-08-02","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 DP 2D + intervals review","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 CompArch + GPU transition review","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 SRAM design: size access transistors for read stability","color":"#A855F7"}]},"2026-08-03":{"date":"2026-08-03","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Math & Bits: Rotate Image, Spiral Matrix, Set Matrix Zeroes","color":"#FF9500"},{"track":"CompArch","topic":"SM internals: CUDA cores, tensor cores, SFU, 4 warp schedulers","color":"#76B9ED"},{"track":"VLSI","topic":"DRAM: 1T1C cell, capacitor voltage \u2192 bit, refresh cycle","color":"#A855F7"}]},"2026-08-04":{"date":"2026-08-04","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Math & Bits: Happy Number, Plus One, Pow(x,n), Multiply Strings","color":"#FF9500"},{"track":"CompArch","topic":"GPU memory hierarchy: registers \u2192 L1/shared \u2192 L2 \u2192 HBM","color":"#76B9ED"},{"track":"VLSI","topic":"DRAM timing: RAS (row access), CAS (column access), tRCD, tCL, tRP","color":"#A855F7"}]},"2026-08-05":{"date":"2026-08-05","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Math & Bits: Counting Bits, Missing Number, Reverse Bits, Sum of Two Integers","color":"#FF9500"},{"track":"CompArch","topic":"Memory coalescing: aligned 128B transaction, stride-1 vs stride-32","color":"#76B9ED"},{"track":"VLSI","topic":"HBM: 3D stacking, through-silicon via (TSV), wide I/O","color":"#A855F7"}]},"2026-08-06":{"date":"2026-08-06","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Greedy: Jump Game I & II, Gas Station","color":"#FF9500"},{"track":"CompArch","topic":"Shared memory bank conflicts: 32 banks, broadcast exception, padding","color":"#76B9ED"},{"track":"VLSI","topic":"HBM2/HBM3: bandwidth calculation (e.g. HBM3: 6.4 GT/s \u00d7 1024b = 819 GB/s)","color":"#A855F7"}]},"2026-08-07":{"date":"2026-08-07","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Greedy: Hand of Straights, Merge Triplets, Partition Labels, Valid Parenthesis String","color":"#FF9500"},{"track":"CompArch","topic":"Warp occupancy: register + shared mem limits per SM, occupancy calc","color":"#76B9ED"},{"track":"VLSI","topic":"Standard cell library: NAND2/NOR2/MUX2/DFF cells, drive strengths X1/X2/X4","color":"#A855F7"}]},"2026-08-08":{"date":"2026-08-08","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"LC150 COMPLETE \u2705 \u2014 full review + weak spots","color":"#FF9500"},{"track":"CompArch","topic":"Tensor core: 16\u00d716\u00d716 D=A\u00d7B+C WMMA, TF32, BF16, FP8","color":"#76B9ED"},{"track":"VLSI","topic":"Liberty (.lib) file: timing arcs (A\u2192Z rise/fall), Cin, Cout, power tables","color":"#A855F7"}]},"2026-08-09":{"date":"2026-08-09","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 celebrate + plan next 2 months","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 GPU memory model problems","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 standard cell characterization overview","color":"#A855F7"}]},"2026-08-10":{"date":"2026-08-10","phase":"P3","phaseColor":"#A855F7","phaseDesc":"Phase 3 \u00b7 GPU Architecture + OoO + Cache Coherence + Advanced VLSI","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Hard: Sliding Window Maximum, Minimum Window Substring revisit","color":"#FF9500"},{"track":"CompArch","topic":"A100: 3rd-gen tensor core, TF32 (19b mantissa), BF16, 80GB HBM2e, MIG","color":"#76B9ED"},{"track":"VLSI","topic":"Floorplanning: area estimation, macro placement, pin assignment","color":"#A855F7"}]},"2026-08-11":{"date":"2026-08-11","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Hard: Largest Rectangle in Histogram (stack approach), Trapping Rain Water II","color":"#FF9500"},{"track":"CompArch","topic":"H100: transformer engine, FP8, NVLink 4.0, HBM3, NVSwitch","color":"#76B9ED"},{"track":"VLSI","topic":"Placement: timing-driven, congestion-aware, cell density","color":"#A855F7"}]},"2026-08-12":{"date":"2026-08-12","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"NVIDIA-tagged: LRU Cache, LFU Cache","color":"#FF9500"},{"track":"CompArch","topic":"PCIe: TLP structure, credit-based flow control, Gen4 BW (64 GB/s)","color":"#76B9ED"},{"track":"VLSI","topic":"Clock tree synthesis (CTS): H-tree structure, clock skew minimization","color":"#A855F7"}]},"2026-08-13":{"date":"2026-08-13","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"NVIDIA-tagged: Design Search Autocomplete, Find Median from Stream","color":"#FF9500"},{"track":"CompArch","topic":"NVLink + NVSwitch: all-to-all 900 GB/s, DGX A100 topology","color":"#76B9ED"},{"track":"VLSI","topic":"Clock mesh: lower skew than H-tree but higher power","color":"#A855F7"}]},"2026-08-14":{"date":"2026-08-14","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"NVIDIA-tagged: Range Sum Query (BIT/Segment Tree), Design In-Memory FS","color":"#FF9500"},{"track":"CompArch","topic":"Roofline model: peak FLOPS ridge point, arithmetic intensity","color":"#76B9ED"},{"track":"VLSI","topic":"STA setup: timing graph, arrival time, required time, slack","color":"#A855F7"}]},"2026-08-15":{"date":"2026-08-15","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Hard DP: Matrix Chain Multiplication, Egg Drop","color":"#FF9500"},{"track":"CompArch","topic":"Apply roofline: GEMM (compute-bound) vs attention (BW-bound)","color":"#76B9ED"},{"track":"VLSI","topic":"OCV derating: CRPR (clock reconvergence pessimism removal), AOCV tables","color":"#A855F7"}]},"2026-08-16":{"date":"2026-08-16","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 GPU architecture review","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 STA problem set: find critical path in netlist","color":"#A855F7"}]},"2026-08-17":{"date":"2026-08-17","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Graph Hard: Alien Dictionary, Critical Connections in Network","color":"#FF9500"},{"track":"CompArch","topic":"DNN training: FP32 \u2192 mixed precision, FP16 + loss scaling, BF16","color":"#76B9ED"},{"track":"VLSI","topic":"Power grid: IR drop analysis, EM (electromigration) limits","color":"#A855F7"}]},"2026-08-18":{"date":"2026-08-18","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Graph Hard: Word Ladder II, Number of Distinct Islands","color":"#FF9500"},{"track":"CompArch","topic":"Quantization: INT8 PTQ, per-tensor vs per-channel, calibration dataset","color":"#76B9ED"},{"track":"VLSI","topic":"Routing: preferred direction per metal layer, via resistance, DRC","color":"#A855F7"}]},"2026-08-19":{"date":"2026-08-19","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Advanced Trees: Segment Tree (build + query + update)","color":"#FF9500"},{"track":"CompArch","topic":"Systolic array: weight stationary dataflow, PE grid, GEMM mapping","color":"#76B9ED"},{"track":"VLSI","topic":"DRC rules: min width, min spacing, enclosure, antenna ratio rule","color":"#A855F7"}]},"2026-08-20":{"date":"2026-08-20","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Advanced Trees: Fenwick/BIT tree \u2014 prefix sum queries","color":"#FF9500"},{"track":"CompArch","topic":"Transformer bottleneck: attention BW-bound, KV cache memory","color":"#76B9ED"},{"track":"VLSI","topic":"LVS: compare schematic netlist vs extracted netlist, short/open faults","color":"#A855F7"}]},"2026-08-21":{"date":"2026-08-21","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: 2 mediums timed (45 min each, no hints)","color":"#FF9500"},{"track":"CompArch","topic":"Flash attention: tiling idea, SRAM reuse, HBM traffic reduction","color":"#76B9ED"},{"track":"VLSI","topic":"DFT: scan chain insertion, scan enable pin, ATPG, fault models (SA0/SA1)","color":"#A855F7"}]},"2026-08-22":{"date":"2026-08-22","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: 1 hard timed + 1 company-tagged","color":"#FF9500"},{"track":"CompArch","topic":"Sparsity: N:M 2:4 structured, A100 sparse tensor core (2\u00d7 throughput)","color":"#76B9ED"},{"track":"VLSI","topic":"Design for yield: critical area, redundancy, process corners (SS/FF/TT/SF/FS)","color":"#A855F7"}]},"2026-08-23":{"date":"2026-08-23","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 AI/ML HW problem set","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 full VLSI physical design flow recap","color":"#A855F7"}]},"2026-08-24":{"date":"2026-08-24","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: Graph + DP mixed (45 min each)","color":"#FF9500"},{"track":"CompArch","topic":"Inference serving: static batching vs continuous batching","color":"#76B9ED"},{"track":"VLSI","topic":"VLSI interview Q: 'Size CMOS NAND3 for equal rise/fall delays'","color":"#A855F7"}]},"2026-08-25":{"date":"2026-08-25","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: System design coding \u2014 LRU Cache + Rate Limiter","color":"#FF9500"},{"track":"CompArch","topic":"TensorRT: layer fusion, kernel auto-tune, INT8 calibration workflow","color":"#76B9ED"},{"track":"VLSI","topic":"VLSI interview Q: 'Explain metastability \u2014 how do you prevent it?'","color":"#A855F7"}]},"2026-08-26":{"date":"2026-08-26","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Wed","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: Tree + backtracking timed","color":"#FF9500"},{"track":"CompArch","topic":"System design mock: LLM inference server for 70B model","color":"#76B9ED"},{"track":"VLSI","topic":"VLSI interview Q: 'Derive Elmore delay for 3-inverter chain'","color":"#A855F7"}]},"2026-08-27":{"date":"2026-08-27","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Thu","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: Heap + sliding window set","color":"#FF9500"},{"track":"CompArch","topic":"Multi-GPU training: data/model/pipeline parallelism \u2014 ZeRO stages","color":"#76B9ED"},{"track":"VLSI","topic":"VLSI interview Q: 'Explain setup/hold violation \u2014 how to fix each?'","color":"#A855F7"}]},"2026-08-28":{"date":"2026-08-28","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Fri","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: Full 90-min simulation (2 problems + behavioral)","color":"#FF9500"},{"track":"CompArch","topic":"CompArch full sweep: pipeline \u2192 cache \u2192 coherence (cheat sheet)","color":"#76B9ED"},{"track":"VLSI","topic":"VLSI interview Q: 'Describe 6T SRAM write operation \u2014 sizing?'","color":"#A855F7"}]},"2026-08-29":{"date":"2026-08-29","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sat","isRest":false,"tracks":[{"track":"DSA","topic":"Mock: NVIDIA-tagged final set","color":"#FF9500"},{"track":"CompArch","topic":"GPU full sweep: SIMT \u2192 memory \u2192 tensor core \u2192 H100 (cheat sheet)","color":"#76B9ED"},{"track":"VLSI","topic":"VLSI interview Q: 'What is IR drop? How do you fix it in physical design?'","color":"#A855F7"}]},"2026-08-30":{"date":"2026-08-30","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sun","isRest":true,"tracks":[{"track":"DSA","topic":"REST \u2014 DSA complete","color":"#FF9500"},{"track":"CompArch","topic":"REST \u2014 final review","color":"#76B9ED"},{"track":"VLSI","topic":"REST \u2014 final VLSI review","color":"#A855F7"}]},"2026-08-31":{"date":"2026-08-31","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Mon","isRest":false,"tracks":[{"track":"DSA","topic":"Light review: patterns cheat sheet only","color":"#FF9500"},{"track":"CompArch","topic":"Mock: CompArch interview Q&A (self-drill 20 Qs)","color":"#76B9ED"},{"track":"VLSI","topic":"Full VLSI sweep: CMOS \u2192 delay \u2192 power \u2192 arithmetic \u2192 memory \u2192 PD","color":"#A855F7"}]},"2026-09-01":{"date":"2026-09-01","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Tue","isRest":false,"tracks":[{"track":"DSA","topic":"DSA done \u2014 switch to interview prep only","color":"#FF9500"},{"track":"CompArch","topic":"Mock: GPU architecture interview Q&A (self-drill)","color":"#76B9ED"},{"track":"VLSI","topic":"Mock VLSI whiteboard: NAND3 sizing + Elmore delay from scratch","color":"#A855F7"}]},"2026-09-02":{"date":"2026-09-02","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Wed","isRest":false,"tracks":[{"track":"CompArch","topic":"Mock: combined CompArch+GPU+VLSI simulation","color":"#76B9ED"},{"track":"VLSI","topic":"VLSI hard Qs: logical effort calculation, CLA carry logic, SNM","color":"#A855F7"}]},"2026-09-03":{"date":"2026-09-03","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Thu","isRest":false,"tracks":[{"track":"CompArch","topic":"Final mock: system design + architecture","color":"#76B9ED"},{"track":"VLSI","topic":"Final review: all VLSI cheat sheets in one pass","color":"#A855F7"}]},"2026-09-04":{"date":"2026-09-04","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Fri","isRest":false,"tracks":[{"track":"CompArch","topic":"Light review only \u2014 no new material","color":"#76B9ED"},{"track":"VLSI","topic":"Mock: VLSI + CompArch combined simulation","color":"#A855F7"}]},"2026-09-05":{"date":"2026-09-05","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sat","isRest":false,"tracks":[{"track":"CompArch","topic":"REST","color":"#76B9ED"},{"track":"VLSI","topic":"REST","color":"#A855F7"}]},"2026-09-06":{"date":"2026-09-06","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Sun","isRest":true,"tracks":[{"track":"CompArch","topic":"Interview prep: questions to ask interviewer, NVIDIA news","color":"#76B9ED"},{"track":"VLSI","topic":"Last VLSI: draw SRAM cell + timing diagram from scratch","color":"#A855F7"}]},"2026-09-07":{"date":"2026-09-07","phase":"P4","phaseColor":"#F59E0B","phaseDesc":"Phase 4 \u00b7 AI/ML Hardware + Hard DSA + VLSI Revision","dayName":"Mon","isRest":false,"tracks":[{"track":"CompArch","topic":"Mock interview day simulation","color":"#76B9ED"},{"track":"VLSI","topic":"Interview day simulation","color":"#A855F7"}]}};
+
+const PHASE_META = {
+  P1:{label:"Phase 1",title:"DSA Blitz + CompArch + VLSI + DigDesign",dates:"Jun 8–Jun 28",color:"#00D4AA",milestone:"50 LC done. Draw full 5-stage pipeline + cache hierarchy from scratch."},
+  P2:{label:"Phase 2",title:"DSA Finish (→Jul 17) + DigDesign Deep + VLSI Power/Timing",dates:"Jun 29–Jul 17",color:"#FF6B35",milestone:"✅ LC150 DONE Jul 17. Write CDC synchronizer + CLA in SV."},
+  P3:{label:"Phase 3",title:"GPU Architecture + OoO + Cache Coherence + Advanced VLSI",dates:"Jul 18–Aug 10",color:"#A855F7",milestone:"Whiteboard: warp scheduling + MESI + Tomasulo from scratch."},
+  P4:{label:"Phase 4",title:"AI/ML Hardware + Hard DSA + VLSI Revision",dates:"Aug 11–Sep 7",color:"#F59E0B",milestone:"Roofline on real kernel. Systolic array GEMM. VLSI full review."},
+  P5:{label:"Phase 5",title:"Mock Interviews Only",dates:"Sep 8–Sep 15",color:"#EF4444",milestone:"Zero new material. 100% execution."}
+};
+
+const TRACK_COLORS = {DSA:"#FF9500",CompArch:"#76B9ED",VLSI:"#A855F7",DigDesign:"#FF6B35"};
+const START = new Date("2026-06-08"); const END = new Date("2026-09-07"); const LC_TARGET = 150;
+
+// ── STORAGE ───────────────────────────────────────────────────────────────────
+const LS_KEY = "nvidia_prep_checks_v2";
+let checks = {};
+try { checks = JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch(e){}
+
+function save() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(checks)); document.getElementById("last-save").textContent = "Saved " + new Date().toLocaleTimeString(); } catch(e){}
+}
+
+function topicKey(date, track, idx) { return `${date}__${track}__${idx}`; }
+function isChecked(date, track, idx) { return !!checks[topicKey(date,track,idx)]; }
+function toggleCheck(date, track, idx) {
+  const k = topicKey(date,track,idx);
+  checks[k] = !checks[k];
+  save();
+  refreshProgress();
+}
+
+// ── DATE UTILS ────────────────────────────────────────────────────────────────
+const TODAY_STR = (()=>{ const n=new Date(); return n.toISOString().slice(0,10); })();
+const TODAY = new Date(TODAY_STR);
+function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+const totalDays = daysBetween(START,END);
+const elapsed = Math.max(0,Math.min(totalDays,daysBetween(START,TODAY)));
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+function getProgress() {
+  let all=0,done=0; const byPhase={};
+  Object.entries(SCHEDULE).forEach(([ds,day])=>{
+    const ph=day.phase;
+    if(!byPhase[ph]) byPhase[ph]={all:0,done:0};
+    day.tracks.forEach((t,i)=>{
+      all++; byPhase[ph].all++;
+      if(isChecked(ds,t.track,i)){ done++; byPhase[ph].done++; }
+    });
+  });
+  return {all,done,pct:all?Math.round(done/all*100):0,byPhase};
+}
+
+function refreshProgress() {
+  const p = getProgress();
+  const overallPct = Math.round(elapsed/totalDays*100);
+  document.getElementById("overall-pct").textContent = overallPct+"%";
+  document.getElementById("overall-bar").style.width = overallPct+"%";
+  document.getElementById("header-sub").textContent = `Jun 8 → Sep 7, 2026 · ${elapsed}d elapsed · ${Math.max(0,totalDays-elapsed)}d left · ${p.done}/${p.all} topics done`;
+  // update any visible check counts
+  document.querySelectorAll("[data-day-check]").forEach(el=>{
+    const ds = el.dataset.dayCheck;
+    const day = SCHEDULE[ds]; if(!day) return;
+    let d=0; day.tracks.forEach((t,i)=>{ if(isChecked(ds,t.track,i)) d++; });
+    el.textContent = `${d}/${day.tracks.length}`;
+  });
+  document.querySelectorAll("[data-phase-check]").forEach(el=>{
+    const ph = el.dataset.phaseCheck;
+    const bp = getProgress().byPhase[ph]||{done:0,all:0};
+    el.textContent = `${bp.done}/${bp.all}`;
+  });
+}
+
+// ── LC FETCH ──────────────────────────────────────────────────────────────────
+async function fetchLC() {
+  const area = document.getElementById("lc-stats-area");
+  try {
+    const r = await fetch(`https://leetcode-stats-api.herokuapp.com/wannabecodeboss`);
+    const d = await r.json();
+    if(d.status==="error") throw new Error();
+    renderLC(d.totalSolved, d.easySolved, d.mediumSolved, d.hardSolved);
+  } catch(e) {
+    try {
+      const r2 = await fetch(`https://alfa-leetcode-api.onrender.com/wannabecodeboss/solved`);
+      const d2 = await r2.json();
+      renderLC(d2.solvedProblem||0, d2.easySolved||0, d2.mediumSolved||0, d2.hardSolved||0);
+    } catch(e2) {
+      area.innerHTML = `<span style="font-size:10px;color:#FF6B35">⚠ LC API offline — stats unavailable</span>`;
+    }
+  }
+}
+
+function renderLC(total, easy, med, hard) {
+  const pct = Math.min(100,Math.round(total/LC_TARGET*100));
+  const lcDeadline = new Date("2026-07-17");
+  const daysLeft = Math.max(0,daysBetween(TODAY,lcDeadline));
+  const needed = Math.max(0,LC_TARGET-total);
+  const perDay = daysLeft>0?Math.ceil(needed/daysLeft):0;
+  const deadlineColor = daysLeft<7?"#EF4444":"#FF9500";
+  document.getElementById("lc-stats-area").innerHTML = `
+    <div><span class="lc-stat">${total}</span><span class="lc-sub">/${LC_TARGET}</span></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="font-size:10px;color:#00D4AA"><b>${easy}</b><span style="color:var(--muted);font-size:8px">E</span></span>
+      <span style="font-size:10px;color:#FF9500"><b>${med}</b><span style="color:var(--muted);font-size:8px">M</span></span>
+      <span style="font-size:10px;color:#EF4444"><b>${hard}</b><span style="color:var(--muted);font-size:8px">H</span></span>
+    </div>
+    <div class="lc-bar-wrap">
+      <div class="progress-bar" style="margin-top:0"><div class="progress-fill" style="background:linear-gradient(90deg,#FF9500,#FCD34D);width:${pct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:3px">
+        <span class="lc-pace" style="color:var(--muted)">${pct}% of 150</span>
+        <span class="lc-pace" style="color:${deadlineColor}">Jul 17 · ${daysLeft}d · ${perDay}/day</span>
+      </div>
+    </div>`;
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+let currentTab = "days";
+function showTab(t) {
+  currentTab = t;
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("tab-"+t).classList.add("active");
+  render();
+}
+
+// ── RENDER DAILY VIEW ─────────────────────────────────────────────────────────
+let openDays = new Set([TODAY_STR]);
+let filterPhase = "ALL";
+let filterTrack = "ALL";
+
+function renderDays() {
+  const days = Object.values(SCHEDULE);
+  let html = `<div class="section-label">TAP A DAY TO CHECK TOPICS · CHECKS SAVE TO YOUR BROWSER</div>`;
+  html += `<div class="filter-bar">`;
+  ["ALL","P1","P2","P3","P4"].forEach(f=>{
+    const c = f==="ALL"?"var(--accent)":(PHASE_META[f]||{color:"var(--muted)"}).color;
+    html += `<button class="filter-btn${filterPhase===f?" active":""}" onclick="setPhaseFilter('${f}')" style="${filterPhase===f?`color:${c};border-color:${c}`:""}">${f==="ALL"?"All Phases":f}</button>`;
+  });
+  html += `<button class="jump-btn" onclick="jumpToday()">→ Today</button></div>`;
+
+  let currentMonth = "";
+  days.forEach(day => {
+    if(filterPhase !== "ALL" && day.phase !== filterPhase) return;
+    const month = day.date.slice(0,7);
+    if(month !== currentMonth) {
+      currentMonth = month;
+      const mLabel = new Date(day.date+"T12:00:00").toLocaleString("default",{month:"long",year:"numeric"});
+      html += `<div class="month-label">${mLabel}</div>`;
+    }
+    const isToday = day.date === TODAY_STR;
+    const isOpen = openDays.has(day.date);
+    const phColor = day.phaseColor || "#5A7A9A";
+    let doneCount=0, totalCount=day.tracks.length;
+    day.tracks.forEach((t,i)=>{ if(isChecked(day.date,t.track,i)) doneCount++; });
+    const allDone = totalCount>0 && doneCount===totalCount;
+    const preview = day.isRest ? "REST / Review day" : (day.tracks[0]?.topic||"");
+    html += `<div class="day-card" id="day-${day.date}" style="border-color:${isToday?"#EF4444":allDone?"#00D4AA33":day.isRest?"#1A2F4A":"var(--border)"}">
+      <div class="day-header" onclick="toggleDay('${day.date}')">
+        <div class="day-date">${day.date.slice(5)}${isToday?'<span class="today-dot"></span>':''}</div>
+        <div class="day-name" style="color:var(--muted)">${day.dayName}</div>
+        <div class="day-phase-dot" style="background:${phColor}"></div>
+        <div class="day-preview">${day.isRest?"☽ REST":preview}</div>
+        <div class="day-check-count" data-day-check="${day.date}" style="color:${allDone?"#00D4AA":doneCount>0?"#FF9500":"var(--muted)"}">${doneCount}/${totalCount}</div>
+        <div style="color:var(--muted);font-size:11px;margin-left:4px;flex-shrink:0">${isOpen?"▲":"▼"}</div>
+      </div>`;
+    if(isOpen) {
+      html += `<div class="day-expanded">`;
+      if(day.isRest) {
+        html += `<div class="rest-badge">🌙 Rest day — light review only. Recharge.</div>`;
+      }
+      day.tracks.forEach((t,i)=>{
+        const done = isChecked(day.date,t.track,i);
+        html += `<div class="day-topic-row" onclick="toggleCheck('${day.date}','${t.track}',${i})">
+          <input type="checkbox" ${done?"checked":""} onclick="event.stopPropagation();toggleCheck('${day.date}','${t.track}',${i})">
+          <span class="track-pill" style="background:${t.color}18;border:1px solid ${t.color}44;color:${t.color}">${t.track}</span>
+          <span class="day-topic-text${done?" done":""}">${t.topic}</span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  return html;
+}
+
+function toggleDay(ds) {
+  if(openDays.has(ds)) openDays.delete(ds); else openDays.add(ds);
+  render();
+}
+function setPhaseFilter(f) { filterPhase=f; render(); }
+function jumpToday() {
+  openDays.add(TODAY_STR);
+  render();
+  setTimeout(()=>{ const el=document.getElementById("day-"+TODAY_STR); if(el) el.scrollIntoView({behavior:"smooth",block:"center"}); },100);
+}
+
+// ── RENDER PHASES ─────────────────────────────────────────────────────────────
+let openPhases = new Set();
+function renderPhases() {
+  const prog = getProgress();
+  let html = `<div class="section-label">TAP A PHASE TO EXPAND</div>`;
+  Object.entries(PHASE_META).forEach(([pid,pm])=>{
+    const bp = prog.byPhase[pid]||{done:0,all:0};
+    const isOpen = openPhases.has(pid);
+    const phaseDays = Object.values(SCHEDULE).filter(d=>d.phase===pid);
+    const startD=new Date(phaseDays[0]?.date), endD=new Date(phaseDays[phaseDays.length-1]?.date);
+    const timePct = TODAY<startD?0:TODAY>endD?100:Math.round(daysBetween(startD,TODAY)/daysBetween(startD,endD)*100);
+    html += `<div class="card" style="border-color:${isOpen?pm.color:"var(--border)"}">
+      <div class="card-header" onclick="togglePhase('${pid}')">
+        <div class="pid" style="background:${pm.color}18;border:1px solid ${pm.color}44;color:${pm.color}">${pid}</div>
+        <div style="flex:1;min-width:140px">
+          <div style="font-size:13px;font-weight:700;color:#E8F4FF">${pm.title}</div>
+          <div style="font-size:9px;color:var(--muted);margin-top:2px">${pm.dates}</div>
+          <div style="margin-top:5px;width:130px"><div class="progress-bar" style="margin-top:0;height:2px"><div class="progress-fill" style="background:${pm.color};width:${timePct}%"></div></div></div>
+        </div>
+        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+          <span class="badge" style="background:${pm.color}18;border:1px solid ${pm.color}44;color:${pm.color}">${timePct}% time</span>
+          <span class="badge" style="background:#76B9ED18;border:1px solid #76B9ED44;color:#76B9ED" data-phase-check="${pid}">${bp.done}/${bp.all}</span>
+          <span style="color:var(--muted);font-size:12px">${isOpen?"▲":"▼"}</span>
+        </div>
+      </div>`;
+    if(isOpen) {
+      // Group days by track
+      const trackMap = {};
+      phaseDays.forEach(day=>{
+        day.tracks.forEach((t,i)=>{
+          if(!trackMap[t.track]) trackMap[t.track] = [];
+          trackMap[t.track].push({date:day.date,topic:t.topic,color:t.color,idx:i});
+        });
+      });
+      html += `<div class="card-expanded">`;
+      Object.entries(trackMap).forEach(([track,items])=>{
+        const tc = TRACK_COLORS[track]||"#76B9ED";
+        html += `<div class="track-hdr" style="color:${tc}">◈ ${track}</div><div class="track-block" style="border-left-color:${tc}33">`;
+        items.forEach(item=>{
+          const done = isChecked(item.date,track,item.idx);
+          html += `<div class="topic-row" onclick="toggleCheck('${item.date}','${track}',${item.idx})">
+            <input type="checkbox" ${done?"checked":""} onclick="event.stopPropagation();toggleCheck('${item.date}','${track}',${item.idx})">
+            <span style="font-size:8px;color:${tc};flex-shrink:0;margin-top:3px;width:36px">${item.date.slice(5)}</span>
+            <span class="topic-text${done?" done":""}">${item.topic}</span>
+          </div>`;
+        });
+        html += `</div>`;
+      });
+      html += `<div class="milestone" style="background:${pm.color}0C;border:1px solid ${pm.color}33">
+        <span style="font-size:8px;color:${pm.color};letter-spacing:0.12em;text-transform:uppercase">✓ MILESTONE · </span>${pm.milestone}
+      </div></div>`;
+    }
+    html += `</div>`;
+  });
+  return html;
+}
+function togglePhase(pid) { if(openPhases.has(pid)) openPhases.delete(pid); else openPhases.add(pid); render(); }
+
+// ── RENDER PROGRESS ───────────────────────────────────────────────────────────
+function renderProgress() {
+  const prog = getProgress();
+  let html = `<div class="section-label">YOUR PROGRESS — SAVED IN YOUR BROWSER LOCALLY</div>`;
+  // LC card
+  html += `<div class="card" style="border-color:#FF9500;margin-bottom:12px"><div style="padding:14px">
+    <div style="font-size:9px;color:#FF9500;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px">⬡ LEETCODE LIVE — @wannabecodeboss</div>
+    <div id="lc-progress-area" style="font-size:10px;color:var(--muted)">Loading…</div>
+  </div></div>`;
+  // Stats grid
+  const dLeft = Math.max(0,totalDays-elapsed);
+  html += `<div class="stats-grid">
+    ${[["Topics Done",`${prog.done}/${prog.all}`,"#00D4AA"],["Days Left",dLeft,"#A855F7"],["Overall",prog.pct+"%","#76B9ED"],["Phase",getCurrentPhase(),"#F59E0B"]].map(([l,v,c])=>
+      `<div class="stat-card"><div class="stat-val" style="color:${c}">${v}</div><div class="stat-lbl">${l}</div></div>`).join("")}
+  </div>`;
+  // Per-phase breakdown
+  html += `<div style="margin-top:14px"><div class="section-label">By Phase</div>`;
+  Object.entries(PHASE_META).forEach(([pid,pm])=>{
+    const bp = prog.byPhase[pid]||{done:0,all:0};
+    const pct = bp.all?Math.round(bp.done/bp.all*100):0;
+    html += `<div class="card" style="padding:12px 14px;margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:6px">
+        <span style="font-size:11px;color:#E8F4FF;font-weight:600">${pid} · ${pm.label}</span>
+        <span class="badge" style="background:${pm.color}18;border:1px solid ${pm.color}44;color:${pm.color}">${bp.done}/${bp.all} topics</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="background:${pm.color};width:${pct}%"></div></div>
+      <div style="font-size:9px;color:var(--muted);margin-top:3px">${pct}% complete · ${pm.dates}</div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+function getCurrentPhase() {
+  const ds = TODAY_STR;
+  const day = SCHEDULE[ds];
+  return day?.phase||"P1";
+}
+
+// Hook to update lc-progress-area after render
+function updateLCProgressArea() {
+  const area = document.getElementById("lc-progress-area");
+  if(!area) return;
+  const lcArea = document.getElementById("lc-stats-area");
+  if(lcArea) area.innerHTML = lcArea.innerHTML;
+}
+
+// ── RENDER WEEKLY ─────────────────────────────────────────────────────────────
+function renderWeekly() {
+  const days = [
+    {d:"MON",focus:"CompArch / VLSI deep dive",dsa:"3 LC problems (pattern focus)",h:"3.5h",c:"#00D4AA"},
+    {d:"TUE",focus:"Digital Design / GPU arch",dsa:"3 LC problems",h:"3.5h",c:"#76B9ED"},
+    {d:"WED",focus:"Single topic deep dive + notes",dsa:"3 LC problems",h:"3h",c:"#A855F7"},
+    {d:"THU",focus:"CompArch / VLSI continued",dsa:"3 LC problems",h:"3.5h",c:"#00D4AA"},
+    {d:"FRI",focus:"AI/ML Hardware (from Phase 3+)",dsa:"3 LC + weak spot review",h:"3h",c:"#F59E0B"},
+    {d:"SAT",focus:"Mock interview / full topic review",dsa:"4 LC (1 hard attempt)",h:"4h",c:"#FF6B35"},
+    {d:"SUN",focus:"Light flashcard sweep + rest",dsa:"1–2 LC (optional)",h:"1h",c:"#3A5A6A"},
+  ];
+  let html = `<div class="section-label">WEEKLY TEMPLATE — ADAPTS BY PHASE. ≈3.5H/DAY WEEKDAYS.</div>`;
+  days.forEach(d=>{
+    html += `<div class="week-card" style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;opacity:${d.d==="SUN"?0.55:1}">
+      <div class="week-day-name" style="color:${d.c}">${d.d}</div>
+      <div style="flex:1">
+        <div style="font-size:11px;color:#A0B4C8;margin-bottom:3px">◈ ${d.focus}</div>
+        <div style="font-size:11px;color:#6A8A9A">⚙ ${d.dsa}</div>
+      </div>
+      <span class="badge" style="background:${d.c}18;border:1px solid ${d.c}44;color:${d.c};flex-shrink:0">${d.h}</span>
+    </div>`;
+  });
+  html += `<div style="margin-top:16px;background:var(--surf);border:1px solid var(--border);border-radius:4px;padding:14px">
+    <div style="font-size:9px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px">◈ TIME ALLOCATION (WEEKDAYS)</div>
+    <div style="display:flex;height:20px;border-radius:2px;overflow:hidden;gap:1px">
+      ${[["CompArch/VLSI","30%","#00D4AA"],["DSA","28%","#A855F7"],["DigDesign/GPU","22%","#76B9ED"],["AI/ML HW","12%","#F59E0B"],["Review","8%","#1E3A5F"]].map(([l,p,c])=>
+        `<div title="${l}—${p}" style="width:${p};background:${c};display:flex;align-items:center;justify-content:center"><span style="font-size:7px;color:#080C14;font-weight:700;padding:0 2px">${p}</span></div>`).join("")}
+    </div>
+  </div>`;
+  return html;
+}
+
+// ── MAIN RENDER ───────────────────────────────────────────────────────────────
+function render() {
+  const c = document.getElementById("content");
+  if(currentTab==="days") c.innerHTML = renderDays();
+  else if(currentTab==="phases") c.innerHTML = renderPhases();
+  else if(currentTab==="progress") { c.innerHTML = renderProgress(); updateLCProgressArea(); }
+  else if(currentTab==="weekly") c.innerHTML = renderWeekly();
+  refreshProgress();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+render();
+fetchLC();
+refreshProgress();
+</script>
+</body>
+</html>
